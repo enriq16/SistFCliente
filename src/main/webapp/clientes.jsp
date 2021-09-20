@@ -30,22 +30,20 @@
                 </div>
             </div>
         </header>
+        
         <section>
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <a href="${pageContext.request.contextPath}/agregarCliente.jsp" class="btn btn-primary btn-block">
+                        <a href="${pageContext.request.contextPath}/ServletCliente?accion=agregar" 
+                           class="btn btn-primary btn-block">
                             <i class="fas fa-plus"></i> Agregar Cliente
                         </a>
                     </div>
                 </div>
             </div>
         </section>
-
-
-        
-        
-
+              
         <section id="clientes">
             <div class="container">
                 <div class="row">
@@ -83,7 +81,7 @@
                                             <td>${cliente.telefono}</td>
                                             <td>${cliente.fechaNacimiento}</td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/ServletCliente?accion=editar&idCliente=${cliente.id}"
+                                                <a href="${pageContext.request.contextPath}/ServletCliente?accion=editar&idCliente=${cliente.id}&accion=editar"
                                                    class="btn btn-secondary">
                                                     <i class="fas fa-angle-double-right"></i> Editar
                                                 </a>
@@ -98,56 +96,7 @@
             </div>
         </section>
 
-        <div class="modal fade" id="agregarClienteModal" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title">Agregar Cliente</h5> 
-                        <button class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
 
-                    <form action="${pageContext.request.contextPath}/ServletCliente?accion=insertar"
-                          method="POST" class="was-validated">
-
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" class="form-control" name="nombre" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="apellido">Apellido</label>
-                                <input type="text" class="form-control" name="apellido" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="nro_doc">Nro Docuemnto</label>
-                                <input type="text" class="form-control" name="nro_doc" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="tipo_doc">Tipo Documento</label>
-                                <input type="text" class="form-control" name="tipo_doc" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="telefono">Teléfono</label>
-                                <input type="telefono" class="form-control" name="telefono" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha_nacimeinto">Fecha Nacimiento</label>
-                                <input name="fecha_nacimiento" class="datepicker" data-date-format="dd-mm-yyyy" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" type="submit">Guardar</button>
-                        </div>    
-                    </form>
-                </div>
-            </div>
-        </div>
 
 
         <script src="${pageContext.request.contextPath}/node_modules/jquery/dist/jquery.min.js"></script>   
