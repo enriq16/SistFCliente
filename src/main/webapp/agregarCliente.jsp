@@ -27,39 +27,50 @@
                     <div class="col-md-10">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Listado de Clientes</h4>
+                            <h4>
+                            ${param.accion=="agregar"?"Crear Usuario":param.accion=="editar"?"Editar Usuario":"XXX"}
+                            </h4>
                             </div>
-                            <form action="${pageContext.request.contextPath}/ServletCliente?accion=insertar"
+                            <form action="${pageContext.request.contextPath}/ServletCliente?accion=${param.accion=="agregar"?"insertar":"modificar"}"
                                   method="POST" class="was-validated">
 
                                 <div class="modal-body">
                                     <div class="form-group">
+                                        <input name="idCliente" type="hidden" value="${cliente != null ? cliente.id : ""}">
+                                        
                                         <label for="nombre">Nombre</label>
-                                        <input type="text" class="form-control" name="nombre" required>
+                                        <input type="text" value="${cliente != null ? cliente.nombre : ""}"
+                                               class="form-control" name="nombre" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="apellido">Apellido</label>
-                                        <input type="text" class="form-control" name="apellido" required>
+                                        <input type="text" value="${cliente!=null?cliente.apellido:""}"
+                                               class="form-control" name="apellido" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="nro_doc">Nro Docuemnto</label>
-                                        <input type="text" class="form-control" name="nro_doc" required>
+                                        <input type="text" value="${cliente!=null?cliente.nroDoc:""}"
+                                               class="form-control" name="nro_doc" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="tipo_doc">Tipo Documento</label>
-                                        <input type="text" class="form-control" name="tipo_doc" required>
+                                        <input type="text" value="${cliente!=null?cliente.tipDoc:""}"
+                                               class="form-control" name="tipo_doc" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="email" class="form-control" name="email" required>
+                                        <input type="email" value="${cliente!=null?cliente.email:""}"
+                                               class="form-control" name="email" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="telefono">Teléfono</label>
-                                        <input type="telefono" class="form-control" name="telefono" required>
+                                        <input type="telefono" value="${cliente!=null?cliente.telefono:""}"
+                                               class="form-control" name="telefono" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="fecha_nacimeinto">Fecha Nacimiento</label>
-                                        <input name="fechaNacimiento" class="form-control datepicker" data-date-format="dd-mm-yyyy" 
+                                        <input name="fechaNacimiento" value="${cliente!=null?cliente.fechaNacimiento:""}"
+                                               class="form-control datepicker" data-date-format="dd-mm-yyyy" 
                                                required>
                                     </div>
                                 </div>
