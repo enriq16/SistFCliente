@@ -134,8 +134,12 @@ public class ServletConceptoUP extends HttpServlet {
         lista = (List<ConceptoUsoPuntos>) sesion.getAttribute("conceptoUsoPuntos");
         Integer id = Integer.parseInt(request.getParameter("id"));
         
-        ConceptoUsoPuntos cc = buscarCliente(lista, id);
-        lista.remove(cc);
+        String concepto = request.getParameter("concepto");
+        Integer ptsRequeridos = Integer.parseInt(request.getParameter("puntosRequeridos"));
+        
+        ConceptoUsoPuntos cc = buscarCliente(lista, id);                          
+        cc.setConcepto(concepto);
+        cc.setPuntosRequeridos(ptsRequeridos);
         
         sesion.setAttribute("conceptoUsoPuntos", lista);
         /*

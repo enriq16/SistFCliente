@@ -63,20 +63,21 @@
         <script src="${pageContext.request.contextPath}/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>     
         <script>
             $(document).ready(function(){
-               $("#frmConceptoUP").on("click",function(){
+               $("#btnConceptoUP").on("click",function(){
                    
-                   let data = $("#fmrConceptoUP").serialize();
+                   let datos = $("#fmrConceptoUP").serialize();
                    
                    $.ajax({
                        url: "${pageContext.request.contextPath}/ServletConceptoUP",
+                       data: datos,
                        method: "${param.accion == "agregar"? "POST" : param.accion == "editar" ? "PUT" : ""}",
-                       success: function( Anything data, String textStatus, jqXHR jqXHR){
+                       success: function( dataRecivido, textStatus, jqXHR){
                            window.alert("Operación Status: "+textStatus);                           
                        },
-                       error: function( jqXHR jqXHR, String textStatus, String errorThrown){
-                           window.alert("Operación Status: "+textStatus", error: "+errorThrown);
+                       error: function( jqXHR, textStatus, errorThrown){
+                           window.alert("Operación Status: "+textStatus+", error: "+errorThrown);
                        },
-                       complete: function(jqXHR jqXHR, String textStatus){
+                       complete: function(jqXHR, textStatus){
                            console.log("Complete redireccionando");
                            window.location = "${pageContext.request.contextPath}/ServletConceptoUP";
                        }        
