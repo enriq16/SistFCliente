@@ -77,13 +77,13 @@ public class NewServlet extends HttpServlet {
         if (lista == null) {
             try {
                 lista = new ArrayList<>();
-                c1 = new Cliente(1, "Enrique", "Ruiz", "3967631", "CI", "Paraguaya", "enriq16@fpuna.edu.py", "0992549600",
+                c1 = new Cliente(1, "Enrique", "Ruiz", 3967631, "CI", "Paraguaya", "enriq16@fpuna.edu.py", "0992549600",
                         new SimpleDateFormat("dd-MM-yyyy").parse("14-06-1987"));
                 lista.add(c1);
-                c1 = new Cliente(2, "Karen", "Verón", "55555", "CI", "Paraguaya", "karen@fpuna.edu.py", "0982875221",
+                c1 = new Cliente(2, "Karen", "Verón", 55555, "CI", "Paraguaya", "karen@fpuna.edu.py", "0982875221",
                         new SimpleDateFormat("dd-MM-yyyy").parse("14-10-1992"));
                 lista.add(c1);
-                c1 = new Cliente(3, "Lizzie", "Miranda", "3385335", "CI", "Paraguaya", "lichimiranda44@gmail.com", "0991711880",
+                c1 = new Cliente(3, "Lizzie", "Miranda", 3385335, "CI", "Paraguaya", "lichimiranda44@gmail.com", "0991711880",
                         new SimpleDateFormat("dd-MM-yyyy").parse("28-02-1993"));
                 lista.add(c1);
             } catch (ParseException ex) {
@@ -179,7 +179,7 @@ public class NewServlet extends HttpServlet {
         //recuperamos los valores del formulario agregarCliente
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
-        String nroDoc = request.getParameter("nro_doc");
+        Integer nroDoc = Integer.parseInt(request.getParameter("nro_doc"));
         String tipoDoc = request.getParameter("tipo_doc");
         String nacionalidad = request.getParameter("nacionalidad");
         String email = request.getParameter("email");
@@ -215,7 +215,8 @@ public class NewServlet extends HttpServlet {
         Integer id = Integer.parseInt(request.getParameter("idCliente"));
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
-        String nroDoc = request.getParameter("nro_doc");
+        Integer nroDoc = Integer.parseInt(request.getParameter("nro_doc"));
+        //String nroDoc = request.getParameter("nro_doc");
         String tipoDoc = request.getParameter("tipo_doc");
         String nacionalidad = request.getParameter("nacionalidad");
         String email = request.getParameter("email");

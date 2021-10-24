@@ -5,23 +5,67 @@
  */
 package com.arquitectura.web.sistfcliente.entity;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;//Ojo hay otra clase llamada Entity en otro paquete
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Enrique Ruiz
  */
-public class Cliente {
-    private Integer id;
-    private String nombre;
-    private String apellido;
-    private String nroDoc;
-    private String tipDoc;
-    private String nacionalidad;
-    private String email;
-    private String telefono;
-    private Date fechaNacimiento;
 
+@Entity(name="Cliente")//como referirse a la clase en el hql(query de jpa)
+@Table(name ="cliente")//nombre de la tabla en la bd
+public class Cliente implements Serializable {
+    @Id
+    @Basic(optional = false )
+    @Column(name="id_cliente")    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;//se recomienda no usar tipos primitivos  
+    /*  
+    En @Basic
+        Lleva optional=false los atributos que en bd son NOT NULL
+    */
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "nombre", nullable=false, length=100)
+    private String nombre;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "apellido", nullable=false, length=100)
+    private String apellido;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "nro_documento", nullable=false)
+    private Integer nroDoc;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "tipo_doc", nullable=false, length=2)
+    private String tipDoc;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "nacionalidad" )        
+    private String nacionalidad;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "email" )
+    private String email;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "telefono" )
+    private String telefono;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "fecha_nacimiento" )
+    private Date fechaNacimiento;//Usar Camel Case
+    
+    /* Es requerimietno de JPA que el Entity Class tenga un constructuor sin argumentos */
     public Cliente() {
     }
 
@@ -29,7 +73,7 @@ public class Cliente {
         this.id = id;
     }
 
-    public Cliente(Integer id, String nombre, String apellido, String nroDoc, String tipDoc, String nacionalidad, String email, String telefono, Date fechaNacimiento) {
+    public Cliente(Integer id, String nombre, String apellido, Integer nroDoc, String tipDoc, String nacionalidad, String email, String telefono, Date fechaNacimiento) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -53,7 +97,7 @@ public class Cliente {
         return apellido;
     }
 
-    public String getNroDoc() {
+    public Integer getNroDoc() {
         return nroDoc;
     }
 
@@ -72,7 +116,8 @@ public class Cliente {
     public String getTelefono() {
         return telefono;
     }
-
+    
+    
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -89,7 +134,7 @@ public class Cliente {
         this.apellido = apellido;
     }
 
-    public void setNroDoc(String nroDoc) {
+    public void setNroDoc(Integer nroDoc) {
         this.nroDoc = nroDoc;
     }
 
@@ -111,6 +156,11 @@ public class Cliente {
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{"+"id= '"+id+"', nombre= '"+nombre+"', apellido= '"+apellido+"', nroDoc= '"+nroDoc+"', tipDoc= '" +tipDoc+"'}";
     }
 
     
