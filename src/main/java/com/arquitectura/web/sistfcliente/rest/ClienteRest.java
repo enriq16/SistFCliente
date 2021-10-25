@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 /**
  *
- * @author Enrique
+ * @author Enrique Ruiz
  */
 
 @Path("cliente")
