@@ -15,7 +15,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author USUARIO
+ * @author Enrique
  */
 
 @Stateless

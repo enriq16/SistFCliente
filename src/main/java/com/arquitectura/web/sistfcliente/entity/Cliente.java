@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Enrique Ruiz
+ * @author Enrique 
  */
 
 @Entity(name="Cliente")//como referirse a la clase en el hql(query de jpa)
