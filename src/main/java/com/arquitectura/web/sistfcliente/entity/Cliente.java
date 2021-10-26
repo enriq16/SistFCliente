@@ -5,6 +5,7 @@
  */
 package com.arquitectura.web.sistfcliente.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -63,6 +64,7 @@ public class Cliente implements Serializable {
     
     @Basic(optional=false, fetch=FetchType.EAGER)
     @Column( name = "fecha_nacimiento" )
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private Date fechaNacimiento;//Usar Camel Case
     
     /* Es requerimietno de JPA que el Entity Class tenga un constructuor sin argumentos */
