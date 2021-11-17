@@ -73,4 +73,19 @@ public class GestorPuntosRest {
         
         return Response.ok(nuevo).build();
     }
+
+    @GET
+    @Path("/consultarpuntos/{montoOp}")
+    public Response getCantPuntos(@PathParam("montoOp") Float monto){
+        
+        /* Monto equivalente a un punto*/
+        Integer montoEqPunto = Util.montoEqPunto(reglaDAO.listar().iterator(),monto);
+        Integer cantPuntos = monto.intValue() / montoEqPunto;
+
+        DatosConsultPuntos aux = new DatosConsultPuntos();
+        aux.setMonto(monto);
+        aux.setCantidadPuntos(cantPuntos);
+
+        return Response.ok(aux).build();
+    }
 }
