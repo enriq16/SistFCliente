@@ -26,12 +26,12 @@ public class DatosConsultPuntos {
         this.monto = monto;
     }
 
-    public Integer getCantidadPunto() {
-        return cantidadPunto;
+    public Integer getCantidadPuntos() {
+        return cantidadPuntos;
     }
 
-    public void setCantidadPunto(Float cantidadPunto) {
-        this.cantidadPunto = cantidadPunto;
+    public void setCantidadPuntos(Integer cantidadPuntos) {
+        this.cantidadPuntos = cantidadPuntos;
     }
 
 }

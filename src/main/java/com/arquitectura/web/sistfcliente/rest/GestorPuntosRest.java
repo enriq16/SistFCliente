@@ -8,14 +8,17 @@ import com.arquitectura.web.sistfcliente.ejb.VencimientoPuntoDAO;
 import com.arquitectura.web.sistfcliente.entity.BolsaPuntos;
 import com.arquitectura.web.sistfcliente.entity.Cliente;
 import com.arquiterctura.web.sisfcliente.util.DatosCargaPuntos;
+import com.arquiterctura.web.sisfcliente.util.DatosConsultPuntos;
 import com.arquiterctura.web.sisfcliente.util.Util;
 import java.util.Date;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.PathParam;
 
 /**
  *
