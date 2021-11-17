@@ -24,7 +24,7 @@ public class Util {
         return c.getTime();
     }
     
-    public static Integer montoEqPunto(Iterator<ReglaAsignacion> it, DatosCargaPuntos data){
+    public static Integer montoEqPunto(Iterator<ReglaAsignacion> it, Float data){
         //Iterator<ReglaAsignacion> it = regla.listar().iterator();
         Integer montoEqPunto = null;
         while(it.hasNext()){
@@ -32,15 +32,15 @@ public class Util {
             
             Integer limInf = aux.getLimiteInf();
             Integer limSup = aux.getLimiteSup();
-            
-            if(aux.getLimiteSup() == null)
-                limSup =  data.getMontoOp().intValue() + 1;             
-            
-            if(limInf <= data.getMontoOp() && data.getMontoOp() <= limSup){
+                                   
+            if(limInf <= data && data <= limSup){
                 montoEqPunto = aux.getMontoEqPunto();
-            }
-                        
+            }            
         }
+        
+        if(montoEqPunto == null)
+            montoEqPunto = 20000;
+        
         return montoEqPunto;
     }
 }
