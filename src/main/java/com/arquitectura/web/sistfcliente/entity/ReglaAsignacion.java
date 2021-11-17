@@ -12,7 +12,7 @@ import javax.persistence.Table;
  *
  * @author Karen
  */
-@Entity(name="ReglaAsigancion")
+@Entity(name="ReglaAsignacion")
 @Table(name="regla_asignacion")
 public class ReglaAsignacion {
 
