@@ -9,6 +9,7 @@ import com.arquitectura.web.sistfcliente.entity.Cliente;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -22,6 +23,14 @@ import javax.persistence.Query;
 public class ClienteDAO {
     @PersistenceContext(unitName = "hibernate_jpa_pu")
     private EntityManager em;
+    
+    public Cliente findById(Integer id){
+        Cliente c = em.find(Cliente.class, id);
+        if(c == null){
+            throw new EntityNotFoundException("No existe Cliente con ID: "+id);
+        }
+        return c;
+    }
     
     public void agregar(Cliente cliente){
         EntityTransaction tr = em.getTransaction();
