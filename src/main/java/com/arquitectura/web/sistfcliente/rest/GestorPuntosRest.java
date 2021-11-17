@@ -47,7 +47,7 @@ public class GestorPuntosRest {
         Integer saldoPunto;
         
         /* Monto Equivalente a un punto */
-        Integer montoEqPunto = Util.montoEqPunto(reglaDAO.listar().iterator(), data);
+        Integer montoEqPunto = Util.montoEqPunto(reglaDAO.listar().iterator(), data.getMontoOp());
         puntoAsignado = data.getMontoOp().intValue() / montoEqPunto;
         saldoPunto = puntoAsignado;        
         
