@@ -20,6 +20,7 @@
 
     </head>
     <body>
+        <jsp:include page="/WEB-INF/util/cabecera.jsp"/>
         <header> 
             <div class="container">
                 <div class="row">

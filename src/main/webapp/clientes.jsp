@@ -20,7 +20,9 @@
 
     </head>            
     <body>
-        <header> 
+        
+        <jsp:include page="/WEB-INF/util/cabecera.jsp"/>
+        <header>             
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
@@ -79,7 +81,9 @@
                                             <td>${cliente.nacionalidad}</td>
                                             <td>${cliente.email}</td>
                                             <td>${cliente.telefono}</td>
-                                            <td>${cliente.fechaNacimiento}</td>
+                                            <td>
+                                            <fmt:formatDate pattern = "yyyy-MM-dd" value = "${cliente.fechaNacimiento}"/>                                                
+                                            </td>
                                             <td>
                                                 <a href="${pageContext.request.contextPath}/ServletCliente?accion=editar&idCliente=${cliente.id}&accion=editar"
                                                    class="btn btn-secondary">

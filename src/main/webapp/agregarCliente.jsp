@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,16 +21,16 @@
 
     </head>            
     <body>
-
+        <jsp:include page="/WEB-INF/util/cabecera.jsp"/>
         <section id="clientes">
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
                         <div class="card">
                             <div class="card-header">
-                            <h4>
-                            ${param.accion=="agregar"?"Crear Usuario":param.accion=="editar"?"Editar Usuario":"XXX"}
-                            </h4>
+                                <h4>
+                                    ${param.accion=="agregar"?"Crear Usuario":param.accion=="editar"?"Editar Usuario":"XXX"}
+                                </h4>
                             </div>
                             <form action="${pageContext.request.contextPath}/ServletCliente?accion=${param.accion=="agregar"?"insertar":"modificar"}"
                                   method="POST" class="was-validated">
@@ -37,7 +38,7 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <input name="idCliente" type="hidden" value="${cliente != null ? cliente.id : ""}">
-                                        
+
                                         <label for="nombre">Nombre</label>
                                         <input type="text" value="${cliente != null ? cliente.nombre : ""}"
                                                class="form-control" name="nombre" required>
@@ -58,6 +59,11 @@
                                                class="form-control" name="tipo_doc" required>
                                     </div>
                                     <div class="form-group">
+                                        <label for="nacionalidad">Nacionalidad</label>
+                                        <input type="text" value="${cliente!=null?cliente.nacionalidad:""}"
+                                               class="form-control" name="nacionalidad" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="email">Email</label>
                                         <input type="email" value="${cliente!=null?cliente.email:""}"
                                                class="form-control" name="email" required>
@@ -69,8 +75,14 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="fecha_nacimeinto">Fecha Nacimiento</label>
-                                        <input name="fechaNacimiento" value="${cliente!=null?cliente.fechaNacimiento:""}"
-                                               class="form-control datepicker" data-date-format="dd-mm-yyyy" 
+                                        <input name="fechaNacimiento"
+                                               <c:choose>                  
+                                                   <c:when test = "${cliente!=null}">
+                                                       value="<fmt:formatDate pattern = "yyyy-MM-dd" value = "${cliente.fechaNacimiento}"/>"
+                                                   </c:when>         
+                                                   <c:otherwise>value=""</c:otherwise>
+                                               </c:choose>
+                                               class="form-control datepicker" data-date-format="yyyy-mm-dd" 
                                                required>
                                     </div>
                                 </div>
@@ -91,7 +103,7 @@
         <script>
             $(document).ready(function () {
                 $('.datepicker').datepicker({
-                    format: 'dd-mm-yyyy'                    
+                    format: 'yyyy-mm-dd'
                 });
             });
         </script>
