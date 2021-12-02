@@ -33,19 +33,14 @@ public class ClienteDAO {
     }
     
     public void agregar(Cliente cliente){
-        EntityTransaction tr = em.getTransaction();
-        tr.begin();
         em.persist(cliente);
-        tr.commit();
-        
+                
         System.out.println("Cliente: "+cliente.toString());        
     }
     
     public void update(Cliente cliente){
         Cliente c = em.find(Cliente.class, cliente.getId());
         
-        EntityTransaction tr = em.getTransaction();
-        tr.begin();
         
         c.setNombre(cliente.getNombre());
         c.setApellido(cliente.getApellido());
@@ -56,7 +51,7 @@ public class ClienteDAO {
         c.setTelefono(cliente.getTelefono());
         c.setFechaNacimiento(cliente.getFechaNacimiento());
         
-        tr.commit();                
+        em.persist(c);
     }
 
     public List<Cliente> listar(){

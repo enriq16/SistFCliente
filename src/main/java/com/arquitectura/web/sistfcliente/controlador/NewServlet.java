@@ -5,6 +5,7 @@
  */
 package com.arquitectura.web.sistfcliente.controlador;
 
+import com.arquitectura.web.sistfcliente.ejb.ClienteDAO;
 import com.arquitectura.web.sistfcliente.entity.Cliente;
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +31,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ServletCliente", urlPatterns = {"/ServletCliente"})
 public class NewServlet extends HttpServlet {
-
+    @Inject
+    private ClienteDAO clienteDAO;
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -45,7 +49,7 @@ public class NewServlet extends HttpServlet {
         String accion = request.getParameter("accion");
         if (accion != null) {
             switch (accion) {
-                case "agregar":
+                case "agregar":                    
                     String jspEditar = "agregarCliente.jsp";
                     request.getRequestDispatcher(jspEditar).forward(request, response);
                     break;
@@ -68,30 +72,10 @@ public class NewServlet extends HttpServlet {
 
     private void accionDefault(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        Cliente c1;
-        List<Cliente> lista;
-        HttpSession sesion = request.getSession();
-        lista = (List<Cliente>) sesion.getAttribute("clientes");
-
-        if (lista == null) {
-            try {
-                lista = new ArrayList<>();
-                c1 = new Cliente(1, "Enrique", "Ruiz", 3967631, "CI", "Paraguaya", "enriq16@fpuna.edu.py", "0992549600",
-                        new SimpleDateFormat("dd-MM-yyyy").parse("14-06-1987"));
-                lista.add(c1);
-                c1 = new Cliente(2, "Karen", "Verón", 55555, "CI", "Paraguaya", "karen@fpuna.edu.py", "0982875221",
-                        new SimpleDateFormat("dd-MM-yyyy").parse("14-10-1992"));
-                lista.add(c1);
-                c1 = new Cliente(3, "Lizzie", "Miranda", 3385335, "CI", "Paraguaya", "lichimiranda44@gmail.com", "0991711880",
-                        new SimpleDateFormat("dd-MM-yyyy").parse("28-02-1993"));
-                lista.add(c1);
-            } catch (ParseException ex) {
-                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        sesion.setAttribute("clientes", lista);
+        
+        List<Cliente> lista = clienteDAO.listar();
+        
+        request.setAttribute("clientes", lista);
         String jspContent = "/clientes.jsp";
         request.getRequestDispatcher(jspContent).forward(request, response);
     }
@@ -101,17 +85,11 @@ public class NewServlet extends HttpServlet {
         try {
             //recuperamos el idCliente
             int idCliente = Integer.parseInt(request.getParameter("idCliente"));
-            HttpSession sesion = request.getSession();
-            List<Cliente> lista = (List<Cliente>) sesion.getAttribute("clientes");
-            if (lista == null) {
-                lista = new ArrayList<>();
-            }
-            
-            Cliente cliente = buscarCliente(lista, idCliente);
+                        
+            Cliente cliente = clienteDAO.findById(idCliente);
             
             request.setAttribute("cliente", cliente);
-            sesion.setAttribute("clientes", lista);
-            
+                        
             String jspEditar = "agregarCliente.jsp";
             request.getRequestDispatcher(jspEditar).forward(request, response);
         } catch (IOException ex) {
@@ -168,14 +146,7 @@ public class NewServlet extends HttpServlet {
 
     private void insertarCliente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
-        List<Cliente> lista = (List<Cliente>) sesion.getAttribute("clientes");
-
-        if (lista == null) {
-            lista = new ArrayList<>();
-        }
-
-        Integer id = lista.size() + 1;
+        Integer id = 0;
         //recuperamos los valores del formulario agregarCliente
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
@@ -186,19 +157,25 @@ public class NewServlet extends HttpServlet {
         String telefono = request.getParameter("telefono");
         Date fechaNacimiento = null;
         try {
-            fechaNacimiento = new SimpleDateFormat("dd-MM-yyyy").parse(request.getParameter("fechaNacimiento"));
+            fechaNacimiento = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("fechaNacimiento"));
         } catch (ParseException ex) {
             System.out.println("Error en foramto de fecha");
             //Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Creamos el objeto de cliente (modelo)
-        Cliente cliente = new Cliente(id, nombre, apellido, nroDoc, tipoDoc, nacionalidad, email, telefono, fechaNacimiento);
+        Cliente cliente = new Cliente();
+        cliente.setNombre(nombre);
+        cliente.setApellido(apellido);
+        cliente.setNroDoc(nroDoc);
+        cliente.setTipDoc(tipoDoc);
+        cliente.setNacionalidad(nacionalidad);
+        cliente.setEmail(email);
+        cliente.setTelefono(telefono);
+        cliente.setFechaNacimiento(fechaNacimiento);
 
         //Insertamos el nuevo objeto en la base de datos
-        lista.add(cliente);
-
-        sesion.setAttribute("clientes", lista);
+        clienteDAO.agregar(cliente);
 
         //Redirigimos hacia accion por default
         this.accionDefault(request, response);
@@ -206,9 +183,7 @@ public class NewServlet extends HttpServlet {
 
     private void modificarCliente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
-        List<Cliente> lista = (List<Cliente>) sesion.getAttribute("clientes");
-
+        
         System.out.println("idCliente: "+request.getParameter("idCliente"));
         
         //recuperamos los valores del formulario agregarCliente
@@ -223,32 +198,15 @@ public class NewServlet extends HttpServlet {
         String telefono = request.getParameter("telefono");
         Date fechaNacimiento = null;
         try {
-            fechaNacimiento = new SimpleDateFormat("dd-MM-yyyy").parse(request.getParameter("fechaNacimiento"));
+            fechaNacimiento = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("fechaNacimiento"));
         } catch (ParseException ex) {
             System.out.println("Error en foramto de fecha");            
         }
-        System.out.println("id: "+id);
-        System.out.println("lista: "+lista);
         
-        Iterator<Cliente> it = lista.iterator();
-        while (it.hasNext()) {
-            Cliente aux = it.next();
-            if (aux.getId().intValue() == id) {
-                aux.setNombre(nombre);
-                aux.setApellido(apellido);
-                aux.setNroDoc(nroDoc);
-                aux.setTipDoc(tipoDoc);
-                aux.setNacionalidad(nacionalidad);
-                aux.setEmail(email);
-                aux.setTelefono(telefono);
-                aux.setFechaNacimiento(fechaNacimiento);
-            }
-        }
+        Cliente cliente = new Cliente(id, nombre, apellido, nroDoc, tipoDoc, nacionalidad, email, telefono, fechaNacimiento);
         
+        clienteDAO.update(cliente);
         
-
-        sesion.setAttribute("clientes", lista);
-
         //Redirigimos hacia accion por default
         this.accionDefault(request, response);
     }
