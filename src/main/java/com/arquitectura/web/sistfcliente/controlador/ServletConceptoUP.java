@@ -1,6 +1,7 @@
 
 package com.arquitectura.web.sistfcliente.controlador;
 
+import com.arquitectura.web.sistfcliente.ejb.ConceptoUsoPuntosDAO;
 import com.arquitectura.web.sistfcliente.entity.Cliente;
 import com.arquitectura.web.sistfcliente.entity.ConceptoUsoPuntos;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +20,8 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "ServletConceptoUP", urlPatterns = {"/ServletConceptoUP"})
 public class ServletConceptoUP extends HttpServlet {
-
+    @Inject
+    private ConceptoUsoPuntosDAO conceptUsoPuntosDAO;
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,18 +62,19 @@ public class ServletConceptoUP extends HttpServlet {
     private void editarCliente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
         try {
-            //recuperamos el idCliente
-            int id = Integer.parseInt(request.getParameter("id"));
-            HttpSession sesion = request.getSession();
-            List<ConceptoUsoPuntos> lista = (List<ConceptoUsoPuntos>) sesion.getAttribute("conceptoUsoPuntos");
-            if (lista == null) {
-                lista = new ArrayList<>();
-            }
             
-            ConceptoUsoPuntos cc = buscarCliente(lista, id);
+            int id = Integer.parseInt(request.getParameter("id"));
+            /*
+            String concepto = request.getParameter("concepto");
+            int puntos_req = Integer.parseInt(request.getParameter("puntosRequeridos"));
+            */
+            ConceptoUsoPuntos cc;                                   
+            cc = conceptUsoPuntosDAO.findById(id);            
+            
+            List<ConceptoUsoPuntos> lista = conceptUsoPuntosDAO.listar();                                 
             
             request.setAttribute("cc", cc);
-            sesion.setAttribute("conceptoUsoPuntos", lista);
+            request.setAttribute("conceptoUsoPuntos", lista);
             
             String jspEditar = "agregarConceptoUsoPt.jsp";
             request.getRequestDispatcher(jspEditar).forward(request, response);
@@ -105,44 +109,46 @@ public class ServletConceptoUP extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ConceptoUsoPuntos cc;
         List<ConceptoUsoPuntos> lista;
-        HttpSession sesion = request.getSession();
-        lista = (List<ConceptoUsoPuntos>) sesion.getAttribute("conceptoUsoPuntos");
-        
-        if(lista == null){
-            lista = new ArrayList<ConceptoUsoPuntos>();
-        }
-        Integer id = lista.size() + 1;
+                
         String concepto = request.getParameter("concepto");
         Integer ptsRequeridos = Integer.parseInt(request.getParameter("puntosRequeridos"));
         
-        lista.add(new ConceptoUsoPuntos(id, concepto, ptsRequeridos));
+        cc = new ConceptoUsoPuntos();
+        cc.setConcepto(concepto);
+        cc.setPuntosRequeridos(ptsRequeridos);
+        System.out.println("Concepto: "+cc);
+        conceptUsoPuntosDAO.agregar(cc);
+        lista = conceptUsoPuntosDAO.listar();
         
-        sesion.setAttribute("conceptoUsoPuntos", lista);
         /*
+        request.setAttribute("conceptoUsoPuntos", lista);
         String jspContent = "/conceptoUsoPts.jsp";
-        request.getRequestDispatcher(jspContent).forward(request, response);         
+        request.getRequestDispatcher(jspContent).forward(request, response);
         */
     }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Método Put");
-        
-        List<ConceptoUsoPuntos> lista;
-        HttpSession sesion = request.getSession();
-        lista = (List<ConceptoUsoPuntos>) sesion.getAttribute("conceptoUsoPuntos");
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        
+        System.out.println("Método Put");        
+        //List<ConceptoUsoPuntos> lista;
+                
+        Integer id = Integer.parseInt(request.getParameter("id"));        
         String concepto = request.getParameter("concepto");
         Integer ptsRequeridos = Integer.parseInt(request.getParameter("puntosRequeridos"));
         
-        ConceptoUsoPuntos cc = buscarCliente(lista, id);                          
+        ConceptoUsoPuntos cc = new ConceptoUsoPuntos();
+        
+        cc.setId(id);
         cc.setConcepto(concepto);
         cc.setPuntosRequeridos(ptsRequeridos);
         
-        sesion.setAttribute("conceptoUsoPuntos", lista);
+        conceptUsoPuntosDAO.update(cc);
+        //lista = conceptUsoPuntosDAO.listar();
         /*
+        request.setAttribute("conceptoUsoPuntos", lista);
+        
         String jspContent = "/conceptoUsoPts.jsp";
         request.getRequestDispatcher(jspContent).forward(request, resp);                  
         */
@@ -163,17 +169,11 @@ public class ServletConceptoUP extends HttpServlet {
 
     private void accionDefault(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<ConceptoUsoPuntos> lista;
-        HttpSession sesion = request.getSession();
-        lista = (List<ConceptoUsoPuntos>) sesion.getAttribute("conceptoUsoPuntos");
-         
-        if(lista == null){
-            lista = new ArrayList<ConceptoUsoPuntos>();
-            lista.add(new ConceptoUsoPuntos(1, "Vale de Premio", 50));
-            lista.add(new ConceptoUsoPuntos(2, "Vale de Descuento", 100));
-            lista.add(new ConceptoUsoPuntos(3, "vale de consumición", 50));            
-        }
         
-        sesion.setAttribute("conceptoUsoPuntos", lista);
+        
+        lista = conceptUsoPuntosDAO.listar();        
+                
+        request.setAttribute("conceptoUsoPuntos", lista);
 
         String jspContent = "/conceptoUsoPts.jsp";
         request.getRequestDispatcher(jspContent).forward(request, response); 
