@@ -60,11 +60,15 @@ public class BolsaPuntos implements Serializable{
     @Basic(optional=false, fetch=FetchType.EAGER)
     @Column( name = "monto_op", nullable=false)
     private float montoOperacion;
+    
+    @Basic(optional=false, fetch=FetchType.EAGER)
+    @Column( name = "estado", nullable=false)
+    private String estado;
 
     public BolsaPuntos() {
     }
 
-    public BolsaPuntos(Integer id, Cliente cliente, Date fechaAsignacion, Date fechaCaducidad, Integer puntoAsignado, Integer puntoUtilizado, Integer puntoSaldo, float montoOperacion) {
+    public BolsaPuntos(Integer id, Cliente cliente, Date fechaAsignacion, Date fechaCaducidad, Integer puntoAsignado, Integer puntoUtilizado, Integer puntoSaldo, float montoOperacion, String estado) {
         this.id = id;
         this.cliente = cliente;
         this.fechaAsignacion = fechaAsignacion;
@@ -73,7 +77,10 @@ public class BolsaPuntos implements Serializable{
         this.puntoUtilizado = puntoUtilizado;
         this.puntoSaldo = puntoSaldo;
         this.montoOperacion = montoOperacion;
+        this.estado = estado;
     }
+
+    
 
     public Integer getId() {
         return id;
@@ -107,6 +114,10 @@ public class BolsaPuntos implements Serializable{
         return montoOperacion;
     }
 
+    public String getEstado() {
+        return estado;
+    }        
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -138,4 +149,8 @@ public class BolsaPuntos implements Serializable{
     public void setMontoOperacion(float montoOperacion) {
         this.montoOperacion = montoOperacion;
     }        
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }       
 }
