@@ -37,12 +37,12 @@ public class BolsaPuntos implements Serializable{
     
     @Basic(optional=false, fetch=FetchType.EAGER)
     @Column( name = "fecha_asignacion" )
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date fechaAsignacion;
     
     @Basic(optional=false, fetch=FetchType.EAGER)
     @Column( name = "fecha_caducidad" )
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date fechaCaducidad;
     
     @Basic(optional=false, fetch=FetchType.EAGER)
