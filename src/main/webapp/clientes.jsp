@@ -85,7 +85,7 @@
                                             <fmt:formatDate pattern = "yyyy-MM-dd" value = "${cliente.fechaNacimiento}"/>                                                
                                             </td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/ServletCliente?accion=editar&idCliente=${cliente.id}&accion=editar"
+                                                <a href="${pageContext.request.contextPath}/ServletCliente?accion=editar&idCliente=${cliente.id}"
                                                    class="btn btn-secondary">
                                                     <i class="fas fa-angle-double-right"></i> Editar
                                                 </a>                                                
