@@ -38,7 +38,7 @@ public class VencimientoPunto {
 
     @Column (name="cant_dia_duracion")
     @Basic (optional = false)
-    private Integer cantDiaDuracion;
+    private Integer cant;
     
     public VencimientoPunto(){}
 
@@ -50,7 +50,7 @@ public class VencimientoPunto {
         this.id = id;
         this.fechaInicioVal = fechaInicioVal;
         this.fechaFinVal = fechaFinVal;
-        this.cantDiaDuracion = cantDiaDuracion;
+        this.cant = cantDiaDuracion;
     }
     public Integer getId() {
         return id;
@@ -64,9 +64,7 @@ public class VencimientoPunto {
         return fechaFinVal;
     }
 
-    public Integer getCantDiaDuracion() {
-        return cantDiaDuracion;
-    }
+    
 
     public void setId(Integer id) {
         this.id = id;
@@ -80,13 +78,19 @@ public class VencimientoPunto {
         this.fechaFinVal = fechaFinVal;
     }
 
-    public void setCantDiaDuracion(Integer fechaInicioVal) {
-        this.cantDiaDuracion = cantDiaDuracion;
+    public Integer getCant() {
+        return cant;
     }
+
+    public void setCant(Integer cant) {
+        this.cant = cant;
+    }
+
+    
 
     @Override
     public String toString() {
         return "VencimientoPunto{"+"id= '"+id+"', fechaInicioVal= '"+fechaInicioVal+"',"
-                 + " fechaFinVal= '"+fechaFinVal+"', " + "cantDiaDuracion= '"+cantDiaDuracion+"''}";
+                 + " fechaFinVal= '"+fechaFinVal+"', " + "cantDiaDuracion= '"+cant+"''}";
     }
 }

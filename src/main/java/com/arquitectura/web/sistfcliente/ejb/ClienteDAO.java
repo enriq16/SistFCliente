@@ -33,14 +33,20 @@ public class ClienteDAO {
     }
     
     public void agregar(Cliente cliente){
-        em.persist(cliente);
-                
-        System.out.println("Cliente: "+cliente.toString());        
+        System.out.println("Cliente: "+cliente.toString());    
+        em.merge(cliente);
+        System.out.println("Cliente despues: "+cliente.toString());    
+        //em.persist(cliente);                       
     }
     
     public void update(Cliente cliente){
         Cliente c = em.find(Cliente.class, cliente.getId());
         
+        boolean prueba = em.contains(c);
+        if(prueba)
+            System.out.println("Esta en el Context");
+        else
+            System.out.println("No esta en el Context");
         
         c.setNombre(cliente.getNombre());
         c.setApellido(cliente.getApellido());
@@ -51,12 +57,26 @@ public class ClienteDAO {
         c.setTelefono(cliente.getTelefono());
         c.setFechaNacimiento(cliente.getFechaNacimiento());
         
-        em.persist(c);
+        em.flush();
     }
 
     public List<Cliente> listar(){
         Query q = em.createQuery("select c from Cliente c");
-        return (List<Cliente>) q.getResultList();
+        List<Cliente> lista = (List<Cliente>) q.getResultList();
+        
+        boolean prueba = em.contains(lista.get(0));
+        if(prueba)
+            System.out.println("Esta en el Context");
+        else
+            System.out.println("No esta en el Context");
+        
+        return lista;
+    }
+
+    public void delete(Cliente c) {
+        c = findById(c.getId());
+        if(c != null)
+            em.remove(c);
     }
     
 }

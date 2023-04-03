@@ -55,7 +55,7 @@ public class GestorPuntosRest {
         saldoPunto = puntoAsignado;        
         
         /* Parametro de vencimiento de Puntos: de donde quitamos la cantidad de dìas de duraciòn de la bolsa */
-        Integer diasDuracion = paramVencDAO.getVencimientoActivo().getCantDiaDuracion();                      
+        Integer diasDuracion = paramVencDAO.getVencimientoActivo().getCant();                      
         
         Date fechaInicio = new Date();
         Date fechaFin    = Util.SumarDias(new Date(), diasDuracion);/* Sumar diasDuracion a fecha actual */
@@ -71,6 +71,7 @@ public class GestorPuntosRest {
         nuevo.setPuntoAsignado(puntoAsignado);
         nuevo.setPuntoUtilizado(puntoUtilizado);
         nuevo.setPuntoSaldo(puntoAsignado);                
+        nuevo.setEstado("A");
         
         bolsaDAO.cargaPuntos(nuevo);
         
@@ -83,6 +84,7 @@ public class GestorPuntosRest {
         
         /* Monto equivalente a un punto*/
         Integer montoEqPunto = Util.montoEqPunto(reglaDAO.listar().iterator(),monto);
+        System.out.println(monto.intValue() +"/"+ montoEqPunto);
         Integer cantPuntos = monto.intValue() / montoEqPunto;
 
         DatosConsultPuntos aux = new DatosConsultPuntos();
